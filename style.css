@@ -1,18 +1,18 @@
 @font-face {
   font-family: "Gilroy";
-  src: url("/Gilroy-Medium.e7e7c091.ttf") format("truetype");
+  src: url("./fonts/Gilroy-Medium.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: "Gilroy";
-  src: url("/Gilroy-SemiBold.f3ed44cd.ttf") format("truetype");
+  src: url("./fonts/Gilroy-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 @font-face {
   font-family: "Mazius Display";
-  src: url("/Mazius-Extraitalic.121a71a7.otf") format("opentype");
+  src: url("./fonts/Mazius-Extraitalic.otf") format("opentype");
   font-weight: normal;
   font-style: italic;
 }
@@ -148,9 +148,7 @@ body #main #home .nav nav a.nav-link {
   display: inline-block;
   pointer-events: auto;
   margin: 0 10px;
-}
-body #main #home .nav nav a.nav-link:hover {
-  color: #000000;
+  cursor: pointer;
 }
 body #main #home .nav nav a.nav-link::before,
 body #main #home .nav nav a.nav-link::after {
@@ -159,7 +157,7 @@ body #main #home .nav nav a.nav-link::after {
   bottom: 0px;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 1px;
   background-color: #444444;
   transition: transform 0.5s cubic-bezier(0, 0.89, 0.41, 1);
   pointer-events: none;
