@@ -48,6 +48,13 @@ function runLoaderAnimation() {
             height: "60%",
             duration: 0.6,
             ease: "power3.inOut",
+        })
+        .set("#loader", {
+            zIndex: -6,
+            onComplete: function() {
+                // Also set the z-index directly to ensure it's applied
+                document.querySelector('#loader').style.zIndex = "-6";
+            }
         });
 }
 
@@ -101,40 +108,54 @@ function animateSVG() {
 
 // Initialize Locomotive Scroll
 function initLocomotiveScroll() {
-    // Kill any existing instance
-    if (locoScroll) {
-        locoScroll.destroy();
-    }
-
-    // Create new instance with improved settings
-    locoScroll = new LocomotiveScroll({
-        el: document.querySelector('#main'),
-        smooth: true,
-        multiplier: 0.5,  // Reduced for smoother scrolling
-        class: 'is-inview',
-        getDirection: true,
-        getSpeed: false,  // Disable speed calculation for smoother experience
-        reloadOnContextChange: true,
-        lerp: 0.12,  // Adjusted for smoother scrolling
-        smartphone: {
-            smooth: true,
-            multiplier: 0.5,
-            lerp: 0.12
-        },
-        tablet: {
-            smooth: true,
-            multiplier: 0.5,
-            lerp: 0.12
+    try {
+        // Kill any existing instance
+        if (locoScroll) {
+            locoScroll.destroy();
         }
-    });
+
+        // Check if LocomotiveScroll is available
+        if (typeof LocomotiveScroll === 'undefined') {
+            console.error('LocomotiveScroll is not defined. Make sure the library is loaded correctly.');
+            return null;
+        }
+
+        // Create new instance with improved settings
+        locoScroll = new LocomotiveScroll({
+            el: document.querySelector('#main'),
+            smooth: true,
+            multiplier: 0.5,  // Reduced for smoother scrolling
+            class: 'is-inview',
+            getDirection: true,
+            getSpeed: false,  // Disable speed calculation for smoother experience
+            reloadOnContextChange: true,
+            lerp: 0.12,  // Adjusted for smoother scrolling
+            smartphone: {
+                smooth: true,
+                multiplier: 0.5,
+                lerp: 0.12
+            },
+            tablet: {
+                smooth: true,
+                multiplier: 0.5,
+                lerp: 0.12
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing LocomotiveScroll:', error);
+        return null;
+    }
 
     // Fix for container issues - force update after a short delay
     setTimeout(() => {
-        locoScroll.update();
+        if (locoScroll) {
+            locoScroll.update();
+        }
     }, 1000);
 
     // Add scroll event listener to manually handle image parallax
-    locoScroll.on('scroll', (instance) => {
+    try {
+        locoScroll.on('scroll', (instance) => {
         // Target only img tags with data-scroll-speed attribute
         document.querySelectorAll('img[data-scroll-speed]').forEach(element => {
             const speed = parseFloat(element.getAttribute('data-scroll-speed'));
@@ -203,6 +224,9 @@ function initLocomotiveScroll() {
             imgc.style.transform = `translate(${adjustedX}%, ${translateY}%) rotate(${adjustedRotation}deg)`;
         });
     });
+    } catch (error) {
+        console.error('Error setting up scroll event listener:', error);
+    }
 
     return locoScroll;
 }
